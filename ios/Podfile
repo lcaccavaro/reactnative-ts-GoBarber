@@ -1,0 +1,28 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'appgobarber' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for appgobarber
+
+  target 'appgobarberTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'appgobarber-tvOS' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for appgobarber-tvOS
+
+  target 'appgobarber-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
