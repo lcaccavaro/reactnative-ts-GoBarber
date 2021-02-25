@@ -9,9 +9,16 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../services/api';
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar_url: string;
+}
+
 interface AuthState {
   token: string;
-  user: any;
+  user: User;
 }
 
 interface SignInCredentials {
@@ -20,7 +27,7 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  user: any;
+  user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
   loading: boolean;
@@ -50,12 +57,19 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('sessions', {
-      email,
-      password,
-    });
+    // const response = await api.post('sessions', {
+    //   email,
+    //   password,
+    // });
 
-    const { token, user } = response.data;
+    //const { token, user } = response.data;
+    const token = '38i0ewejioieojof';
+    const user = {
+      id: 'knfkn3n3io',
+      name: 'Lucas Caccavaro',
+      email: 'lcaccavaro@gmail.com',
+      avatar_url: 'https://avatars.githubusercontent.com/u/40892464?s=460&u=4b21e0779f183df367942e0f232c2f4c3c40d2e6&v=4'
+    };
 
     await AsyncStorage.multiSet([
       ['@GoBarber:token', token],
