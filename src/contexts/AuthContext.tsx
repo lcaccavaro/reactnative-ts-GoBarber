@@ -30,6 +30,7 @@ interface AuthContextData {
   user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  updateUser(user: User): Promise<void>;
   loading: boolean;
 }
 
@@ -57,19 +58,19 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signIn = useCallback(async ({ email, password }) => {
-    // const response = await api.post('sessions', {
-    //   email,
-    //   password,
-    // });
+    const response = await api.post('sessions', {
+      email,
+      password,
+    });
 
-    //const { token, user } = response.data;
-    const token = '38i0ewejioieojof';
-    const user = {
-      id: 'knfkn3n3io',
-      name: 'Lucas Caccavaro',
-      email: 'lcaccavaro@gmail.com',
-      avatar_url: 'https://avatars.githubusercontent.com/u/40892464?s=460&u=4b21e0779f183df367942e0f232c2f4c3c40d2e6&v=4'
-    };
+    const { token, user } = response.data;
+    // const token = '38i0ewejioieojof';
+    // const user = {
+    //   id: 'knfkn3n3io',
+    //   name: 'Lucas Caccavaro',
+    //   email: 'lcaccavaro@gmail.com',
+    //   avatar_url: 'https://avatars.githubusercontent.com/u/40892464?s=460&u=4b21e0779f183df367942e0f232c2f4c3c40d2e6&v=4'
+    // };
 
     await AsyncStorage.multiSet([
       ['@GoBarber:token', token],
@@ -85,8 +86,17 @@ const AuthProvider: React.FC = ({ children }) => {
     setData({} as AuthState);
   }, []);
 
+  const updateUser = useCallback(async (user: User) => {
+    await AsyncStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+    setData({
+      token: data.token,
+      user,
+    });
+  }, [setData, data.token]);
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut, loading }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut, updateUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
