@@ -44,7 +44,7 @@ export const BackButton = styled.TouchableOpacity``;
 export const HeaderTitle = styled.Text`
   color: #f4ede8;
   font-size: 20px;
-  font-family: 'RobotoSlab-Medium';
+  /* font-family: 'RobotoSlab-Medium'; */
   line-height: 28px;
   margin-left: 16px;
 `;
@@ -61,10 +61,10 @@ export const ProvidersListContainer = styled.View`
 `;
 
 export const ProvidersList = styled(
-  FlatList as new () => FlatList<Provider>,
+  FlatList as new () => FlatList<Provider>
 ).attrs({
-  // horizontal: true,
-  // showsHorizontalScrollIndicator: false,
+  horizontal: true,
+  showsHorizontalScrollIndicator: false,
   contentContainerStyle: {
     paddingVertical: 32,
     paddingHorizontal: 24,
@@ -87,7 +87,7 @@ export const ProviderAvatar = styled.Image`
 `;
 
 export const ProviderName = styled.Text<ProviderNameProps>`
-  font-family: 'RobotoSlab-Medium';
+  /* font-family: 'RobotoSlab-Medium'; */
   font-size: 16px;
   margin-left: 8px;
   color: ${(props) => (props.selected ? '#232129' : '#f4ede8')};
@@ -96,7 +96,7 @@ export const ProviderName = styled.Text<ProviderNameProps>`
 export const Calendar = styled.View``;
 
 export const Title = styled.Text`
-  font-family: 'RobotoSlab-Medium';
+  /* font-family: 'RobotoSlab-Medium'; */
   color: #f4ede8;
   font-size: 24px;
   margin: 0 24px 24px;
@@ -113,7 +113,7 @@ export const Section = styled.View`
 export const SectionTitle = styled.Text`
   font-size: 18px;
   color: #999591;
-  font-family: 'RobotoSlab-Regular';
+  /* font-family: 'RobotoSlab-Regular'; */
   margin: 0 24px 12px;
 `;
 
@@ -137,7 +137,7 @@ export const Hour = styled(RectButton).attrs((props: HourProps) => ({
 
 export const HourText = styled.Text<HourTextProps>`
   color: ${(props) => (props.selected ? '#232129' : '#f4ede8')};
-  font-family: 'RobotoSlab-Regular';
+  /* font-family: 'RobotoSlab-Regular'; */
   font-size: 18px;
 `;
 
@@ -153,5 +153,20 @@ export const CreateAppointmentButton = styled(RectButton)`
 export const CreateAppointmentButtonText = styled.Text`
   color: #312e38;
   font-size: 18px;
-  font-family: 'RobotoSlab-Medium';
+  /* font-family: 'RobotoSlab-Medium'; */
+`;
+
+export const OpenDatePickerButton = styled(RectButton)`
+  height: 46px;
+  background: #ff9000;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 24px;
+`;
+
+export const OpenDatePickerButtonText = styled.Text`
+  /* font-family: 'RobotoSlab-Medium'; */
+  font-size: 16px;
+  color: #232129;
 `;

@@ -10,7 +10,7 @@ export const Container = styled.View`
 export const Title = styled.Text`
   font-size: 24px;
   color: #f4ede8;
-  font-family: 'RobotoSlab-Medium';
+  /* font-family: 'RobotoSlab-Medium'; */
   margin: 24px 0;
 `;
 
@@ -22,8 +22,7 @@ export const Avatar = styled.Image`
   align-self: center;
 `;
 
-export const UserAvatar = styled.TouchableOpacity`
-`;
+export const UserAvatar = styled.TouchableOpacity``;
 
 export const BackButton = styled.TouchableOpacity`
   margin-top: 40px;

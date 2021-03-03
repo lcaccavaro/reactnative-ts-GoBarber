@@ -12,6 +12,7 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import { launchImageLibrary } from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/Feather';
 
 import api from '../../services/api';
 
@@ -21,7 +22,6 @@ import Button from '../../components/Button';
 import { Container, BackButton, Title, Avatar, UserAvatar } from './styles';
 import { useAuth } from '../../contexts/AuthContext';
 import getValidationErrors from '../../utils/getValidationErros';
-import Icon from 'react-native-vector-icons/Feather';
 
 interface ProfileFormData {
   name: string;
@@ -42,32 +42,37 @@ const Profile: React.FC = () => {
   const confirmPasswordInputRef = useRef<TextInput>(null);
 
   const handleUpdateAvatar = useCallback(() => {
-    launchImageLibrary({
-      mediaType: 'photo'
-    }, (response) => {
-      if (response.didCancel) {
-        return;
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+      },
+      (response) => {
+        if (response.didCancel) {
+          return;
+        }
+        if (response.errorMessage) {
+          Alert.alert(response.errorMessage);
+          return;
+        }
+
+        const source = { uri: response.uri };
+
+        const data = new FormData();
+        try {
+          data.append('file', {
+            type: 'image/jpeg',
+            name: `${user.id}.jpeg`,
+            uri: source.uri,
+          });
+
+          api.patch('users/avatar', data).then((apiResponse) => {
+            updateUser(apiResponse.data);
+          });
+        } catch (error) {
+          console.log(error);
+        }
       }
-      if (response.errorMessage) {
-        Alert.alert(response.errorMessage);
-        return;
-      }
-
-      const source = { uri: response.uri };
-
-      const data = new FormData();
-
-      data.append('avatar', {
-        type: 'image/jpeg',
-        name: `${user.id}.jpeg`,
-        uri: source.uri,
-      });
-
-      api.patch('users/avatar', data).then(apiResponse => {
-        updateUser(apiResponse.data);
-      });
-
-    });
+    );
   }, [updateUser, user.id]);
 
   const handleSaveProfile = useCallback(async (data: ProfileFormData) => {
@@ -98,20 +103,25 @@ const Profile: React.FC = () => {
         abortEarly: false,
       });
 
-      const { name, email, old_password, password, password_confirmation } = data;
+      const {
+        name,
+        email,
+        old_password,
+        password,
+        password_confirmation,
+      } = data;
 
       const formData = {
         name,
         email,
-        ... (old_password
+        ...(old_password
           ? {
-            old_password,
-            password,
-            password_confirmation
-          }
-          : {}
-        ),
-      }
+              old_password,
+              password,
+              password_confirmation,
+            }
+          : {}),
+      };
 
       const response = await api.put('profile', formData);
 
@@ -119,7 +129,7 @@ const Profile: React.FC = () => {
 
       Alert.alert(
         'Perfil atualizado com sucesso!',
-        'As informações do perfil foram atualizadas.',
+        'As informações do perfil foram atualizadas.'
       );
 
       navigation.goBack();
@@ -134,7 +144,7 @@ const Profile: React.FC = () => {
 
       Alert.alert(
         'Erro na atualização do perfil',
-        'Ocorreu um erro ao atualizar o perfil, tente novamente.',
+        'Ocorreu um erro ao atualizar o perfil, tente novamente.'
       );
     }
   }, []);

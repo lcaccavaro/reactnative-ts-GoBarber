@@ -7,6 +7,7 @@ import {
   Container,
   Header,
   HeaderTitle,
+  LogoutButton,
   ProfileButton,
   ProviderAvatar,
   ProviderContainer,
@@ -17,7 +18,7 @@ import {
   ProvidersList,
   ProvidersListTitle,
   UserAvatar,
-  UserName
+  UserName,
 } from './styles';
 
 export interface Provider {
@@ -32,58 +33,43 @@ const Dashboard: React.FC = () => {
 
   const [providers, setProviders] = useState<Provider[]>([]);
 
-  // const mockedProviders: Provider[] = [
-  //   {
-  //     id: '29803192jdanslkndmlkn',
-  //     name: 'José da Silva',
-  //     avatar_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp0xKoXUryp0JZ1Sxp-99eQiQcFrmA1M1qbQ&usqp=CAU',
-  //   },
-  //   {
-  //     id: 'fjnenfjkewnjj3ndmlkn',
-  //     name: 'Pedro Augusto',
-  //     avatar_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp0xKoXUryp0JZ1Sxp-99eQiQcFrmA1M1qbQ&usqp=CAU',
-  //   },
-  //   {
-  //     id: '3kn4l2kk2nknkn',
-  //     name: 'Solange Almeida',
-  //     avatar_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp0xKoXUryp0JZ1Sxp-99eQiQcFrmA1M1qbQ&usqp=CAU',
-  //   },
-  //   {
-  //     id: 'jio342knlk4n2l3knl',
-  //     name: 'Deide Costa',
-  //     avatar_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp0xKoXUryp0JZ1Sxp-99eQiQcFrmA1M1qbQ&usqp=CAU',
-  //   }
-  // ]
-
   useEffect(() => {
     api.get('providers').then((response) => {
+      console.log(response.data);
       setProviders(response.data);
     });
-    // setProviders(mockedProviders);
   }, []);
 
   const navigateToProfile = useCallback(() => {
     navigate('Profile');
-    // signOut();
   }, [navigate]);
+
+  const logout = useCallback(() => {
+    signOut();
+  }, [signOut]);
 
   const handleSelectProvider = useCallback(
     (providerId: string) => {
       navigate('CreateAppointment', { providerId });
     },
-    [navigate],
+    [navigate]
   );
 
   return (
     <Container>
       <Header>
         <HeaderTitle>
-          Bem vindo, {'\n'}
+          Bem vindo,
+{' '}
+{'\n'}
           <UserName>{user.name}</UserName>
         </HeaderTitle>
         <ProfileButton onPress={navigateToProfile}>
           <UserAvatar source={{ uri: user.avatar_url }} />
         </ProfileButton>
+        <LogoutButton onPress={logout}>
+          <Icon name="log-out" size={20} color="#ff9000" />
+        </LogoutButton>
       </Header>
 
       <ProvidersList

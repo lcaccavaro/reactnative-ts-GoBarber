@@ -78,6 +78,8 @@ const AuthProvider: React.FC = ({ children }) => {
     ]);
 
     setData({ token, user });
+
+    api.defaults.headers.authorization = `Bearer ${token}`;
   }, []);
 
   const signOut = useCallback(async () => {
@@ -86,17 +88,22 @@ const AuthProvider: React.FC = ({ children }) => {
     setData({} as AuthState);
   }, []);
 
-  const updateUser = useCallback(async (user: User) => {
-    await AsyncStorage.setItem('@GoBarber:user', JSON.stringify(user));
+  const updateUser = useCallback(
+    async (user: User) => {
+      await AsyncStorage.setItem('@GoBarber:user', JSON.stringify(user));
 
-    setData({
-      token: data.token,
-      user,
-    });
-  }, [setData, data.token]);
+      setData({
+        token: data.token,
+        user,
+      });
+    },
+    [setData, data.token]
+  );
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut, updateUser, loading }}>
+    <AuthContext.Provider
+      value={{ user: data.user, signIn, signOut, updateUser, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

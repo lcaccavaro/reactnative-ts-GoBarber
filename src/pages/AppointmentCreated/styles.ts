@@ -9,7 +9,7 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-family: 'RobotoSlab-Medium';
+  /* font-family: 'RobotoSlab-Medium'; */
   font-size: 32px;
   color: #f4ede8;
   margin-top: 48px;
@@ -17,7 +17,7 @@ export const Title = styled.Text`
 `;
 
 export const Description = styled.Text`
-  font-family: 'RobotoSlab-Regular';
+  /* font-family: 'RobotoSlab-Regular'; */
   font-size: 18px;
   color: #999591;
   margin-top: 16px;
@@ -34,6 +34,6 @@ export const OkButton = styled(RectButton)`
 
 export const OkButtonText = styled.Text`
   color: #312e38;
-  font-family: 'RobotoSlab-Medium';
+  /* font-family: 'RobotoSlab-Medium'; */
   font-size: 18px;
 `;

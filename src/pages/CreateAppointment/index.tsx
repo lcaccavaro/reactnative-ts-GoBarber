@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import api from '../../services/api';
 
 import {
@@ -28,6 +28,8 @@ import {
   HourText,
   CreateAppointmentButton,
   CreateAppointmentButtonText,
+  OpenDatePickerButton,
+  OpenDatePickerButtonText,
 } from './styles';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -53,7 +55,7 @@ const CreateAppointment: React.FC = () => {
   const params = route.params as RouteParams;
 
   const [selectedProvider, setSelectedProvider] = useState<string>(
-    params.providerId,
+    params.providerId
   );
 
   const minimumDate = useMemo(() => {
@@ -71,6 +73,7 @@ const CreateAppointment: React.FC = () => {
 
   const [providers, setProviders] = useState<Provider[]>([]);
   const [availability, setAvailability] = useState<AvailabilityItem[]>([]);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   useEffect(() => {
     api.get('providers').then((response) => {
@@ -113,10 +116,23 @@ const CreateAppointment: React.FC = () => {
     } catch (err) {
       Alert.alert(
         'Erro ao criar agendamento',
-        'Ocorreu um erro ao tentar criar o agendamento, tente novamente!',
+        'Ocorreu um erro ao tentar criar o agendamento, tente novamente!'
       );
     }
   }, [selectedProvider, selectedDate, selectedHour, navigation]);
+
+  const handleToggleDatePicker = useCallback(() => {
+    setShowDatePicker(!showDatePicker);
+  }, [showDatePicker]);
+
+  const handleDateChange = useCallback((event: any, date: Date | undefined) => {
+    if (Platform.OS === 'android') {
+      setShowDatePicker(false);
+    }
+    if (date) {
+      setSelectedDate(date);
+    }
+  }, []);
 
   const morningAvailability = useMemo(() => {
     return availability
@@ -170,15 +186,23 @@ const CreateAppointment: React.FC = () => {
         <Calendar>
           <Title>Escolha a data</Title>
 
-          <DateTimePicker
-            mode="date"
-            is24Hour
-            display="calendar"
-            value={selectedDate}
-            onChange={(_, date) => date && setSelectedDate(date)}
-            textColor="#f4ede8"
-            minimumDate={minimumDate}
-          />
+          <OpenDatePickerButton onPress={handleToggleDatePicker}>
+            <OpenDatePickerButtonText>
+              Selecionar outra data
+            </OpenDatePickerButtonText>
+          </OpenDatePickerButton>
+
+          {showDatePicker && (
+            <DateTimePicker
+              mode="date"
+              is24Hour
+              display="calendar"
+              value={selectedDate}
+              onChange={handleDateChange}
+              textColor="#f4ede8"
+              minimumDate={minimumDate}
+            />
+          )}
         </Calendar>
 
         <Schedule>
@@ -219,7 +243,7 @@ const CreateAppointment: React.FC = () => {
                       {hourFormatted}
                     </HourText>
                   </Hour>
-                ),
+                )
               )}
             </SectionContent>
           </Section>
