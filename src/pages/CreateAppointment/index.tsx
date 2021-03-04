@@ -32,6 +32,7 @@ import {
   OpenDatePickerButtonText,
 } from './styles';
 import { useAuth } from '../../contexts/AuthContext';
+import getProperLocalhostUrl from '../../utils/getProperLocalhostUrl';
 
 export interface Provider {
   id: string;
@@ -162,7 +163,7 @@ const CreateAppointment: React.FC = () => {
         </BackButton>
         <HeaderTitle>Cabelereiros</HeaderTitle>
 
-        <UserAvatar source={{ uri: user.avatar_url }} />
+        <UserAvatar source={{ uri: getProperLocalhostUrl(user.avatar_url) }} />
       </Header>
       <Container>
         <ProvidersListContainer>
@@ -174,7 +175,9 @@ const CreateAppointment: React.FC = () => {
                 selected={provider.id === selectedProvider}
                 onPress={() => handleSelectProvider(provider.id)}
               >
-                <ProviderAvatar source={{ uri: provider.avatar_url }} />
+                <ProviderAvatar
+                  source={{ uri: getProperLocalhostUrl(provider.avatar_url) }}
+                />
                 <ProviderName selected={provider.id === selectedProvider}>
                   {provider.name}
                 </ProviderName>
@@ -196,7 +199,7 @@ const CreateAppointment: React.FC = () => {
             <DateTimePicker
               mode="date"
               is24Hour
-              display="calendar"
+              display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
               value={selectedDate}
               onChange={handleDateChange}
               textColor="#f4ede8"

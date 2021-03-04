@@ -19,9 +19,17 @@ import api from '../../services/api';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { Container, BackButton, Title, Avatar, UserAvatar } from './styles';
+import {
+  Container,
+  BackButton,
+  Title,
+  Avatar,
+  UserAvatar,
+  BottomButton,
+} from './styles';
 import { useAuth } from '../../contexts/AuthContext';
 import getValidationErrors from '../../utils/getValidationErros';
+import getProperLocalhostUrl from '../../utils/getProperLocalhostUrl';
 
 interface ProfileFormData {
   name: string;
@@ -165,7 +173,9 @@ const Profile: React.FC = () => {
               <Icon name="chevron-left" size={24} color="#999591" />
             </BackButton>
             <UserAvatar onPress={() => handleUpdateAvatar()}>
-              <Avatar source={{ uri: user.avatar_url }} />
+              <Avatar
+                source={{ uri: getProperLocalhostUrl(user.avatar_url) }}
+              />
             </UserAvatar>
 
             <View>
@@ -232,9 +242,11 @@ const Profile: React.FC = () => {
                 onSubmitEditing={() => formRef.current?.submitForm()}
               />
 
-              <Button onPress={() => formRef.current?.submitForm()}>
-                Confirmar mudanças
-              </Button>
+              <BottomButton>
+                <Button onPress={() => formRef.current?.submitForm()}>
+                  Confirmar mudanças
+                </Button>
+              </BottomButton>
             </Form>
           </Container>
         </ScrollView>

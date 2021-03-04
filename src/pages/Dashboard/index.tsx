@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
+import getProperLocalhostUrl from '../../utils/getProperLocalhostUrl';
 import {
   Container,
   Header,
@@ -65,7 +66,9 @@ const Dashboard: React.FC = () => {
           <UserName>{user.name}</UserName>
         </HeaderTitle>
         <ProfileButton onPress={navigateToProfile}>
-          <UserAvatar source={{ uri: user.avatar_url }} />
+          <UserAvatar
+            source={{ uri: getProperLocalhostUrl(user.avatar_url) }}
+          />
         </ProfileButton>
         <LogoutButton onPress={logout}>
           <Icon name="log-out" size={20} color="#ff9000" />
@@ -80,7 +83,9 @@ const Dashboard: React.FC = () => {
         }
         renderItem={({ item: provider }) => (
           <ProviderContainer onPress={() => handleSelectProvider(provider.id)}>
-            <ProviderAvatar source={{ uri: provider.avatar_url }} />
+            <ProviderAvatar
+              source={{ uri: getProperLocalhostUrl(provider.avatar_url) }}
+            />
 
             <ProviderInfo>
               <ProviderName>{provider.name}</ProviderName>
@@ -90,7 +95,7 @@ const Dashboard: React.FC = () => {
               </ProviderMeta>
               <ProviderMeta>
                 <Icon name="clock" size={14} color="#ff9000" />
-                <ProviderMetaText>8h às 18h</ProviderMetaText>
+                <ProviderMetaText>8h às 17h</ProviderMetaText>
               </ProviderMeta>
             </ProviderInfo>
           </ProviderContainer>
